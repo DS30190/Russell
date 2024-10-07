@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Catways</title>
+</head>
+<body>
+    <h1>Liste des Catways</h1>
+    <ul id="catway-list"></ul>
+
+    <script>
+        fetch('/catways')
+            .then(response => response.json())
+            .then(data => {
+                const list = document.getElementById('catway-list');
+                data.forEach(catway => {
+                    const li = document.createElement('li');
+                    li.textContent = `ID: ${catway._id} - Etat: ${catway.state}`;
+                    list.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Erreur:', error));
+    </script>
+</body>
+</html>

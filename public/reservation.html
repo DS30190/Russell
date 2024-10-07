@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de la Réservation</title>
+</head>
+<body>
+    <h1>Détails de la Réservation</h1>
+    <div id="reservationDetails"></div>
+
+    <script>
+        const reservationId = new URLSearchParams(window.location.search).get('id');
+        
+        fetch(`/reservations/${reservationId}`)
+            .then(response => response.json())
+            .then(reservation => {
+                const detailsDiv = document.getElementById('reservationDetails');
+                detailsDiv.innerHTML = `
+                    <p>ID: ${reservation._id}</p>
+                    <p>Catway: ${reservation.catwayId}</p>
+                    <p>Date: ${reservation.date}</p>
+                    <p>Description: ${reservation.description}</p>
+                `;
+            })
+            .catch(error => console.error('Erreur:', error));
+    </script>
+</body>
+</html>

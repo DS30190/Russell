@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - Port de Russell</title>
+</head>
+<body>
+    <h1>Tableau de Bord - Port de Russell</h1>
+    
+    <h2>Gestion des Utilisateurs</h2>
+    <form action="/auth/create-user" method="POST">
+        <h3>Créer un Utilisateur</h3>
+        <label for="newUserEmail">Email :</label>
+        <input type="email" id="newUserEmail" name="email" required>
+        <br>
+        <label for="newUserPassword">Mot de passe :</label>
+        <input type="password" id="newUserPassword" name="password" required>
+        <br>
+        <button type="submit">Créer Utilisateur</button>
+    </form>
+
+    <form action="/auth/update-user" method="POST">
+        <h3>Modifier un Utilisateur</h3>
+        <label for="updateUserId">ID de l'Utilisateur :</label>
+        <input type="text" id="updateUserId" name="userId" required>
+        <br>
+        <label for="updateUserEmail">Nouveau Email :</label>
+        <input type="email" id="updateUserEmail" name="email" required>
+        <br>
+        <label for="updateUserPassword">Nouveau Mot de passe :</label>
+        <input type="password" id="updateUserPassword" name="password">
+        <br>
+        <button type="submit">Modifier Utilisateur</button>
+    </form>
+
+    <form action="/auth/delete-user" method="POST">
+        <h3>Supprimer un Utilisateur</h3>
+        <label for="deleteUserId">ID de l'Utilisateur :</label>
+        <input type="text" id="deleteUserId" name="userId" required>
+        <br>
+        <button type="submit">Supprimer Utilisateur</button>
+    </form>
+
+    <h2>Gestion des Catways</h2>
+    <form action="/catways/create" method="POST">
+        <h3>Créer un Catway</h3>
+        <label for="catwayDescription">Description :</label>
+        <input type="text" id="catwayDescription" name="description" required>
+        <br>
+        <button type="submit">Créer Catway</button>
+    </form>
+
+    <form action="/catways/update" method="POST">
+        <h3>Modifier un Catway</h3>
+        <label for="updateCatwayId">ID du Catway :</label>
+        <input type="text" id="updateCatwayId" name="catwayId" required>
+        <br>
+        <label for="updateCatwayDescription">Nouvelle Description :</label>
+        <input type="text" id="updateCatwayDescription" name="description" required>
+        <br>
+        <button type="submit">Modifier Catway</button>
+    </form>
+
+    <form action="/catways/delete" method="POST">
+        <h3>Supprimer un Catway</h3>
+        <label for="deleteCatwayId">ID du Catway :</label>
+        <input type="text" id="deleteCatwayId" name="catwayId" required>
+        <br>
+        <button type="submit">Supprimer Catway</button>
+    </form>
+
+    <form action="/catways/details" method="GET">
+        <h3>Afficher les Détails d’un Catway</h3>
+        <label for="catwayIdDetails">ID du Catway :</label>
+        <input type="text" id="catwayIdDetails" name="catwayId" required>
+        <br>
+        <button type="submit">Afficher Détails</button>
+    </form>
+
+    <h2>Gestion des Réservations</h2>
+    <form action="/reservations/create" method="POST">
+        <h3>Enregistrer une Réservation</h3>
+        <label for="reservationDetails">Détails de la Réservation :</label>
+        <input type="text" id="reservationDetails" name="details" required>
+        <br>
+        <button type="submit">Enregistrer Réservation</button>
+    </form>
+
+    <form action="/reservations/delete" method="POST">
+        <h3>Supprimer une Réservation</h3>
+        <label for="deleteReservationId">ID de la Réservation :</label>
+        <input type="text" id="deleteReservationId" name="reservationId" required>
+        <br>
+        <button type="submit">Supprimer Réservation</button>
+    </form>
+
+    <form action="/reservations/details" method="GET">
+        <h3>Afficher les Détails d’une Réservation</h3>
+        <label for="reservationIdDetails">ID de la Réservation :</label>
+        <input type="text" id="reservationIdDetails" name="reservationId" required>
+        <br>
+        <button type="submit">Afficher Détails</button>
+    </form>
+
+    <h2>Liens</h2>
+    <a href="/catways/list">Voir la Liste des Catways</a><br>
+    <a href="/reservations/list">Voir la Liste des Réservations</a>
+
+</body>
+</html>
+

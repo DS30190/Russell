@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Catway</title>
+</head>
+<body>
+    <h1>Détails du Catway</h1>
+    <div id="catwayDetails"></div>
+
+    <script>
+        const catwayId = new URLSearchParams(window.location.search).get('id');
+        
+        fetch(`/catways/${catwayId}`)
+            .then(response => response.json())
+            .then(catway => {
+                const detailsDiv = document.getElementById('catwayDetails');
+                detailsDiv.innerHTML = `
+                    <p>ID: ${catway._id}</p>
+                    <p>Nom: ${catway.name}</p>
+                    <p>État: ${catway.status}</p>
+                    <p>Description: ${catway.description}</p>
+                `;
+            })
+            .catch(error => console.error('Erreur:', error));
+    </script>
+</body>
+</html>

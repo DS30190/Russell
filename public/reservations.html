@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Réservations</title>
+</head>
+<body>
+    <h1>Liste des Réservations</h1>
+    <table id="reservationList">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom du Catway</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les données des réservations seront insérées ici -->
+        </tbody>
+    </table>
+
+    <script>
+        fetch('/reservations')
+            .then(response => response.json())
+            .then(reservations => {
+                const tableBody = document.querySelector('#reservationList tbody');
+                reservations.forEach(reservation => {
+                    const row = `<tr>
+                                    <td>${reservation._id}</td>
+                                    <td>${reservation.catwayName}</td>
+                                    <td>${reservation.date}</td>
+                                 </tr>`;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => console.error('Erreur:', error));
+    </script>
+</body>
+</html>
