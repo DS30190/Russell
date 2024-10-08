@@ -10,6 +10,7 @@ const passport = require('./config/passport'); // Pour l'authentification
 const flash = require('connect-flash'); // Pour les messages flash
 const Catway = require('./models/Catway'); // Chemin d'accès au modèle Catway
 const Reservation = require('./models/Reservation'); // Chemin d'accès au modèle Reservation
+const User = require('./models/User'); // Assure-toi que le chemin vers ton modèle User est correct
 
 require('dotenv').config();
 
@@ -36,6 +37,21 @@ app.use(flash());
 // Connexion à la base de données
 connectDB();
 
+app.use(express.urlencoded({ extended: true })); // Pour parser les données du formulaire
+
+// Route pour créer un utilisateur
+app.post('/auth/create-user', async (req, res) => {
+    const { email, password } = req.body; // Récupère les données du formulaire
+
+    try {
+        const newUser = new User({ email, password });
+        await newUser.save(); // Enregistre le nouvel utilisateur dans la base de données
+        res.redirect('/dashboard?message=Utilisateur créé avec succès');
+    } catch (error) {
+        console.error(error);
+        res.redirect('/dashboard?message=Erreur lors de la création de l’utilisateur');
+    }
+});
 
 // Routes pour les API
 app.use('/catways', catwayRoutes);
