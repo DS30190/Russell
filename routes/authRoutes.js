@@ -30,13 +30,13 @@ router.post('/login', (req, res, next) => {
         }
         if (!user) {
             // Au lieu de définir un message d'erreur, redirige simplement vers dashboard.html
-            return res.redirect('/dashboard.html'); // Redirige vers le tableau de bord
+            return res.redirect('/dashboard'); // Redirige vers le tableau de bord
         }
         req.logIn(user, (err) => {
             if (err) {
                 return next(err); // Passe à l'erreur si problème lors de la connexion
             }
-            return res.redirect('/dashboard.html'); // Redirige vers le tableau de bord après connexion
+            return res.redirect('/dashboard'); // Redirige vers le tableau de bord après connexion
         });
     })(req, res, next);
 });

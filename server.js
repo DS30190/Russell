@@ -68,5 +68,25 @@ app.listen(PORT, () => {
     console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
 });
 
+app.get('/', (req, res) => {
+    res.send(`
+        <html>
+            <body>
+                <h1>Page d'accueil</h1>
+                ${req.flash('error').length > 0 ? `<p style="color:red;">${req.flash('error')[0]}</p>` : ''}
+                ${req.flash('success').length > 0 ? `<p style="color:green;">${req.flash('success')[0]}</p>` : ''}
+                <form action="/auth/login" method="POST">
+                    <label for="email">Email :</label>
+                    <input type="email" id="email" name="email" required autocomplete="off">
+                    <br>
+                    <label for="password">Mot de passe :</label>
+                    <input type="password" id="password" name="password" required autocomplete="off">
+                    <br>
+                    <button type="submit">Se connecter</button>
+                </form>
+            </body>
+        </html>
+    `);
+});
 
 
