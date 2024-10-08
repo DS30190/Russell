@@ -3,27 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Détails du Catway</title>
+    <title>Détails du Catway - Port de Russell</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+    </style>
 </head>
 <body>
     <h1>Détails du Catway</h1>
-    <div id="catwayDetails"></div>
-
+    <div id="catway-details">
+        <!-- Les détails du catway seront affichés ici avec JavaScript -->
+    </div>
     <script>
-        const catwayId = new URLSearchParams(window.location.search).get('id');
-        
-        fetch(`/catways/${catwayId}`)
+        const catwayId = window.location.pathname.split('/').pop(); // Obtient l'ID du catway depuis l'URL
+        fetch(`/api/catways/${catwayId}`)
             .then(response => response.json())
             .then(catway => {
-                const detailsDiv = document.getElementById('catwayDetails');
-                detailsDiv.innerHTML = `
-                    <p>ID: ${catway._id}</p>
-                    <p>Nom: ${catway.name}</p>
-                    <p>État: ${catway.status}</p>
-                    <p>Description: ${catway.description}</p>
-                `;
-            })
-            .catch(error => console.error('Erreur:', error));
+                const detailsContainer = document.getElementById('catway-details');
+                detailsContainer.innerHTML = `<h2>${catway.description}</h2><p>ID: ${catway._id}</p>`;
+            });
     </script>
 </body>
 </html>
+

@@ -3,24 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Catways</title>
+    <title>Liste des Catways - Port de Russell</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+    </style>
 </head>
 <body>
     <h1>Liste des Catways</h1>
-    <ul id="catway-list"></ul>
-
+    <div id="catway-list">
+        <!-- La liste des catways sera générée ici avec JavaScript -->
+    </div>
     <script>
-        fetch('/catways')
+        // Remplacez ceci par une requête fetch vers votre API pour obtenir la liste des catways
+        fetch('/api/catways')
             .then(response => response.json())
-            .then(data => {
-                const list = document.getElementById('catway-list');
-                data.forEach(catway => {
-                    const li = document.createElement('li');
-                    li.textContent = `ID: ${catway._id} - Etat: ${catway.state}`;
-                    list.appendChild(li);
+            .then(catways => {
+                const listContainer = document.getElementById('catway-list');
+                catways.forEach(catway => {
+                    const catwayDiv = document.createElement('div');
+                    catwayDiv.innerHTML = `<h3>${catway.description}</h3><a href="/catway/${catway._id}">Voir Détails</a>`;
+                    listContainer.appendChild(catwayDiv);
                 });
-            })
-            .catch(error => console.error('Erreur:', error));
+            });
     </script>
 </body>
 </html>
+

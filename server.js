@@ -8,6 +8,8 @@ const path = require('path');
 const session = require('express-session'); // Pour gérer les sessions
 const passport = require('./config/passport'); // Pour l'authentification
 const flash = require('connect-flash'); // Pour les messages flash
+const Catway = require('./models/Catway'); // Chemin d'accès au modèle Catway
+const Reservation = require('./models/Reservation'); // Chemin d'accès au modèle Reservation
 
 require('dotenv').config();
 
@@ -60,6 +62,62 @@ const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
     console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
 });
+
+// Route pour afficher les détails d'un catway
+app.get('/catway/:id', async (req, res) => {
+    const catwayId = req.params.id;
+    try {
+        // Récupérer le catway par ID depuis la base de données
+        const catway = await Catway.findById(catwayId);
+
+        // Vérifier si le catway existe
+        if (!catway) {
+            return res.status(404).send('<h1>Catway non trouvé</h1>');
+        }
+
+        // Afficher les détails du catway dans une page HTML
+        res.send(`
+        <h1>Détails du Catway</h1>
+        <p><strong>Numéro du Catway :</strong> ${catway.catwayNumber}</p>
+        <p><strong>Type :</strong> ${catway.type}</p>
+        <p><strong>État :</strong> ${catway.catwayState}</p>
+        <a href="/catways/list">Retour à la liste des catways</a>
+    `);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('<h1>Erreur serveur</h1>');
+    }
+});
+
+
+// Route pour afficher les détails d'une réservation
+app.get('/reservation/:id', async (req, res) => {
+    const reservationId = req.params.id;
+    try {
+        // Récupérer la réservation par ID depuis la base de données
+        const reservation = await Reservation.findById(reservationId).populate('catwayId'); // Remplacez par votre méthode pour peupler les détails du catway
+
+        // Vérifier si la réservation existe
+        if (!reservation) {
+            return res.status(404).send('<h1>Réservation non trouvée</h1>');
+        }
+
+        // Afficher les détails de la réservation dans une page HTML
+        res.send(`
+            <h1>Détails de la Réservation</h1>
+            <p><strong>ID de l'utilisateur :</strong> ${reservation.userId}</p>
+            <p><strong>ID du Catway :</strong> ${reservation.catwayId.name} (ID: ${reservation.catwayId._id})</p>
+            <p><strong>Date de début :</strong> ${reservation.startDate}</p>
+            <p><strong>Date de fin :</strong> ${reservation.endDate}</p>
+            <p><strong>Statut :</strong> ${reservation.status}</p>
+            <a href="/reservations/list">Retour à la liste des réservations</a>
+        `);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('<h1>Erreur serveur</h1>');
+    }
+});
+
 
 app.get('/', (req, res) => {
     res.send(`

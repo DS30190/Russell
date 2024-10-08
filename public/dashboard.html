@@ -8,12 +8,16 @@
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
+            background-color: #f4f4f4;
         }
         h1 {
             color: #333;
         }
         form {
             margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: white;
         }
         label {
             display: block;
@@ -32,17 +36,24 @@
             border: none;
             cursor: pointer;
         }
+        button:hover {
+            background-color: #0056b3;
+        }
         a {
             display: inline-block;
             margin-top: 20px;
             text-decoration: none;
             color: #007BFF;
         }
+        #message {
+            color: red;
+        }
     </style>
 </head>
 <body>
     <h1>Tableau de Bord - Port de Russell</h1>
-    
+    <div id="message"></div> <!-- Zone pour afficher les messages -->
+
     <h2>Gestion des Utilisateurs</h2>
     <form action="/auth/create-user" method="POST">
         <h3>Créer un Utilisateur</h3>
@@ -140,8 +151,19 @@
 
     <h2>Liens</h2>
     <a href="/catways/list">Voir la Liste des Catways</a><br>
-    <a href="/reservations/list">Voir la Liste des Réservations</a>
-
+    <a href="/reservations/list">Voir la Liste des Réservations</a><br>
+    <a href="/auth/logout">Déconnexion</a>
+    
+    <script>
+        // Exemple de script pour afficher un message
+        const params = new URLSearchParams(window.location.search);
+        const message = params.get('message');
+        if (message) {
+            document.getElementById('message').innerText = message; // Affiche le message
+        }
+    </script>
 </body>
 </html>
+
+
 

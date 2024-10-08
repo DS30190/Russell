@@ -3,38 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Réservations</title>
+    <title>Liste des Réservations - Port de Russell</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+    </style>
 </head>
 <body>
     <h1>Liste des Réservations</h1>
-    <table id="reservationList">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom du Catway</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Les données des réservations seront insérées ici -->
-        </tbody>
-    </table>
-
+    <div id="reservation-list">
+        <!-- La liste des réservations sera générée ici avec JavaScript -->
+    </div>
     <script>
-        fetch('/reservations')
+        // Remplacez ceci par une requête fetch vers votre API pour obtenir la liste des réservations
+        fetch('/api/reservations')
             .then(response => response.json())
             .then(reservations => {
-                const tableBody = document.querySelector('#reservationList tbody');
+                const listContainer = document.getElementById('reservation-list');
                 reservations.forEach(reservation => {
-                    const row = `<tr>
-                                    <td>${reservation._id}</td>
-                                    <td>${reservation.catwayName}</td>
-                                    <td>${reservation.date}</td>
-                                 </tr>`;
-                    tableBody.insertAdjacentHTML('beforeend', row);
+                    const reservationDiv = document.createElement('div');
+                    reservationDiv.innerHTML = `<h3>${reservation.details}</h3><a href="/reservation/${reservation._id}">Voir Détails</a>`;
+                    listContainer.appendChild(reservationDiv);
                 });
-            })
-            .catch(error => console.error('Erreur:', error));
+            });
     </script>
 </body>
 </html>
+
