@@ -94,27 +94,59 @@ app.get('/catway/:id', async (req, res) => {
 app.get('/reservation/:id', async (req, res) => {
     const reservationId = req.params.id;
     try {
-        // Récupérer la réservation par ID depuis la base de données
-        const reservation = await Reservation.findById(reservationId).populate('catwayId'); // Remplacez par votre méthode pour peupler les détails du catway
-
-        // Vérifier si la réservation existe
+        const reservation = await Reservation.findById(reservationId).populate('catwayId');
         if (!reservation) {
-            return res.status(404).send('<h1>Réservation non trouvée</h1>');
+            return res.status(404).send('Réservation non trouvée');
         }
-
-        // Afficher les détails de la réservation dans une page HTML
         res.send(`
             <h1>Détails de la Réservation</h1>
-            <p><strong>ID de l'utilisateur :</strong> ${reservation.userId}</p>
-            <p><strong>ID du Catway :</strong> ${reservation.catwayId.name} (ID: ${reservation.catwayId._id})</p>
-            <p><strong>Date de début :</strong> ${reservation.startDate}</p>
-            <p><strong>Date de fin :</strong> ${reservation.endDate}</p>
-            <p><strong>Statut :</strong> ${reservation.status}</p>
+            <p><strong>Nom du Client :</strong> ${reservation.clientName}</p>
+            <p><strong>Nom du Bateau :</strong> ${reservation.boatName}</p>
+            <p><strong>Date d'Arrivée :</strong> ${new Date(reservation.checkIn).toLocaleString()}</p>
+            <p><strong>Date de Départ :</strong> ${new Date(reservation.checkOut).toLocaleString()}</p>
             <a href="/reservations/list">Retour à la liste des réservations</a>
+        `);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erreur lors de la récupération de la réservation');
+    }
+});
+
+
+// Route pour afficher la liste des catways
+app.get('/catways/list', async (req, res) => {
+    try {
+        const catways = await Catway.find(); // Récupère tous les catways
+        res.send(`
+            <h1>Liste des Catways</h1>
+            <ul>
+                ${catways.map(catway => `<li>${catway.name} (ID: ${catway._id})</li>`).join('')}
+            </ul>
+            <a href="/dashboard">Retour au tableau de bord</a>
         `);
     } catch (err) {
         console.error(err);
-        res.status(500).send('<h1>Erreur serveur</h1>');
+        res.status(500).send('Erreur lors de la récupération des catways.');
+    }
+});
+
+// Route pour afficher la liste des réservations
+app.get('/reservations/list', async (req, res) => {
+    try {
+        const reservations = await Reservation.find().populate('catwayId'); // Récupère toutes les réservations avec les détails des catways
+        res.send(`
+            <h1>Liste des Réservations</h1>
+            <ul>
+                ${reservations.map(reservation => `
+                    <li>
+                        Réservation ID: ${reservation._id} - Catway: ${reservation.catwayId ? reservation.catwayId.name : 'Non spécifié'} - Utilisateur: ${reservation.userId} - Statut: ${reservation.status}
+                    </li>`).join('')}
+            </ul>
+            <a href="/dashboard">Retour au tableau de bord</a>
+        `);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erreur lors de la récupération des réservations.');
     }
 });
 

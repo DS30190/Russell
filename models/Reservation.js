@@ -5,12 +5,13 @@ const reservationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Catway'  // Référence à la collection Catway
   },
-  userId: String,      // ID de l'utilisateur qui fait la réservation
-  startDate: Date,     // Date de début de la réservation
-  endDate: Date,       // Date de fin de la réservation
-  status: String       // Statut de la réservation (en attente, confirmée, annulée, etc.)
+  clientName: { type: String, required: true },   // Nom du client
+  boatName: { type: String, required: true },     // Nom du bateau
+  checkIn: { type: Date, required: true },        // Date d'arrivée
+  checkOut: { type: Date, required: true },       // Date de départ
 });
 
 module.exports = mongoose.model('Reservation', reservationSchema);
+
 
 
