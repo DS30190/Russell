@@ -34,13 +34,6 @@ app.use(flash());
 // Connexion à la base de données
 connectDB();
 
-// Connexion à MongoDB (si ce n'est pas déjà fait dans connectDB)
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/russell_port', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB connecté'))
-.catch(err => console.error('Erreur de connexion à MongoDB:', err));
 
 // Routes pour les API
 app.use('/catways', catwayRoutes);
