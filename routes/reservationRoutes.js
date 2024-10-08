@@ -1,23 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const reservationController = require('../controllers/reservationController'); 
+const Reservation = require('../models/Reservation');
 
-// Récupérer toutes les réservations pour un catway spécifique
-router.get('/:catwayId', reservationController.getAllReservationsByCatway); 
+// Récupérer toutes les réservations
+router.get('/', async (req, res) => {
+  try {
+    const reservations = await Reservation.find().populate('catwayId'); // Populer avec les détails du catway
+    res.json(reservations);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des réservations' });
+  }
+});
 
-// Récupérer une réservation par son ID pour un catway spécifique
-router.get('/:catwayId/:id', reservationController.getReservationById);  
-
-// Créer une réservation pour un catway spécifique
-router.post('/:catwayId', reservationController.createReservation); 
-
-// Mettre à jour une réservation pour un catway spécifique
-router.put('/:catwayId/:id', reservationController.updateReservation); 
-
-// Supprimer une réservation pour un catway spécifique
-router.delete('/:catwayId/:id', reservationController.deleteReservation);  
+// Créer une nouvelle réservation
+router.post('/', async (req, res) => {
+  try {
+    const newReservation = new Reservation(req.body);
+    await newReservation.save();
+    res.status(201).json(newReservation);
+  } catch (error) {
+    res.status(400).json({ message: 'Erreur lors de la création de la réservation' });
+  }
+});
 
 module.exports = router;
+
 
 
 

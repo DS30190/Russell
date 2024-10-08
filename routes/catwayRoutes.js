@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const catwayController = require('../controllers/catwayController');
+const Catway = require('../models/Catway');
 
-// Routes pour les catways
-router.get('/', catwayController.getAllCatways);
-router.get('/:id', catwayController.getCatwayById);
-router.post('/', catwayController.createCatway);
-router.put('/:id', catwayController.updateCatway);
-router.delete('/:id', catwayController.deleteCatway);
+// Récupérer tous les catways
+router.get('/', async (req, res) => {
+  try {
+    const catways = await Catway.find(); // Récupère tous les catways depuis MongoDB
+    res.json(catways);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des catways' });
+  }
+});
 
 module.exports = router;
+
