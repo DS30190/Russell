@@ -213,11 +213,11 @@ app.get('/', (req, res) => {
 
 // Route pour créer un utilisateur
 app.post('/auth/register', async (req, res) => {
-    const { email, password } = req.body; // Récupère les données du formulaire
+    const { userId, email, password } = req.body; // Récupère les données du formulaire
 
     try {
         // Crée un nouvel utilisateur
-        const newUser = new User({ email, password });
+        const newUser = new User({ userId, email, password });
         await newUser.save(); // Enregistre l'utilisateur dans la base de données
         
         res.redirect('/dashboard?message=Utilisateur créé avec succès'); // Redirige vers le tableau de bord
@@ -228,12 +228,19 @@ app.post('/auth/register', async (req, res) => {
 });
 
 
+
 // Route pour modifier un utilisateur
 app.post('/auth/update-user', async (req, res) => {
     const { userId, email, password } = req.body; // Récupère les données du formulaire
 
     try {
-        const user = await User.findByIdAndUpdate(userId, { email, password }, { new: true });
+        const updateData = { email };
+        if (password) {
+            updateData.password = password; // N'inclure le mot de passe que s'il est présent
+        }
+
+        // Rechercher l'utilisateur par userId
+        const user = await User.findOneAndUpdate({ userId }, updateData, { new: true });
         if (!user) {
             return res.redirect('/dashboard?message=Utilisateur non trouvé');
         }
@@ -243,6 +250,7 @@ app.post('/auth/update-user', async (req, res) => {
         res.redirect('/dashboard?message=Erreur lors de la modification de l’utilisateur');
     }
 });
+
 
 // Route pour supprimer un utilisateur
 app.post('/auth/delete-user', async (req, res) => {

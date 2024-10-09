@@ -2,16 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true, // L'email doit être unique
-        index: true // Indexer le champ email
-    },
-    password: {
-        type: String,
-        required: true,
-    },
+    userId: { type: String, required: true, unique: true }, // Ajout du champ userId
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
 });
 
 // Méthode pour comparer les mots de passe
