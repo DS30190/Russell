@@ -257,13 +257,20 @@ app.post('/auth/delete-user', async (req, res) => {
     const { userId } = req.body; // Récupère l'ID de l'utilisateur
 
     try {
-        await User.findByIdAndDelete(userId);
+        // Rechercher et supprimer l'utilisateur par userId
+        const user = await User.findOneAndDelete({ userId });
+        
+        if (!user) {
+            return res.redirect('/dashboard?message=Utilisateur non trouvé');
+        }
+
         res.redirect('/dashboard?message=Utilisateur supprimé avec succès');
     } catch (error) {
         console.error(error);
         res.redirect('/dashboard?message=Erreur lors de la suppression de l’utilisateur');
     }
 });
+
 
 // Route pour créer un catway
 app.post('/catways/create', async (req, res) => {
