@@ -274,10 +274,10 @@ app.post('/auth/delete-user', async (req, res) => {
 
 // Route pour créer un catway
 app.post('/catways/create', async (req, res) => {
-    const { catwayNumber, type, catwayState } = req.body; // Récupère les données du formulaire
+    const { catwayId, catwayNumber, type, catwayState } = req.body; // Récupère les données du formulaire
 
     try {
-        const newCatway = new Catway({ catwayNumber, type, catwayState });
+        const newCatway = new Catway({ catwayId, catwayNumber, type, catwayState });
         await newCatway.save(); // Enregistre le nouveau catway dans la base de données
         res.redirect('/dashboard?message=Catway créé avec succès');
     } catch (error) {
@@ -286,15 +286,22 @@ app.post('/catways/create', async (req, res) => {
     }
 });
 
+
 // Route pour modifier un catway
 app.post('/catways/update', async (req, res) => {
     const { catwayId, catwayNumber, type, catwayState } = req.body; // Récupère les données
 
     try {
-        const updatedCatway = await Catway.findByIdAndUpdate(catwayId, { catwayNumber, type, catwayState }, { new: true });
+        const updatedCatway = await Catway.findOneAndUpdate(
+            { catwayId }, // Utilisez catwayId pour trouver le catway
+            { catwayNumber, type, catwayState },
+            { new: true } // Renvoie le catway mis à jour
+        );
+
         if (!updatedCatway) {
             return res.redirect('/dashboard?message=Catway non trouvé');
         }
+
         res.redirect('/dashboard?message=Catway modifié avec succès');
     } catch (error) {
         console.error(error);
@@ -302,18 +309,23 @@ app.post('/catways/update', async (req, res) => {
     }
 });
 
+
 // Route pour supprimer un catway
 app.post('/catways/delete', async (req, res) => {
     const { catwayId } = req.body; // Récupère l'ID du catway
 
     try {
-        await Catway.findByIdAndDelete(catwayId);
+        const deletedCatway = await Catway.findOneAndDelete({ catwayId }); // Recherche par catwayId
+        if (!deletedCatway) {
+            return res.redirect('/dashboard?message=Catway non trouvé');
+        }
         res.redirect('/dashboard?message=Catway supprimé avec succès');
     } catch (error) {
         console.error(error);
         res.redirect('/dashboard?message=Erreur lors de la suppression du catway');
     }
 });
+
 
 // Route pour modifier une réservation
 app.post('/reservations/update', async (req, res) => {

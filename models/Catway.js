@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const catwaySchema = new mongoose.Schema({
+  catwayId: { type: String, required: true, unique: true },
   catwayNumber: { type: Number, required: true }, // Ajoutez le numéro du catway
   type: { type: String, required: true },          // Ajoutez le type du catway
   catwayState: { type: String, required: true },   // Ajoutez l'état du catway
