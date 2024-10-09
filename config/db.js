@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-require('dotenv').config(); // Assurez-vous que cela est importé en haut de votre fichier
+require('dotenv').config(); 
 
 const connectDB = async () => {
     try {
@@ -10,7 +10,7 @@ const connectDB = async () => {
         console.log(`MongoDB connecté: ${conn.connection.host}`);
     } catch (err) {
         console.error(`Erreur de connexion à MongoDB: ${err.message}`);
-        process.exit(1); // Arrête l'application en cas d'erreur de connexion
+        process.exit(1); 
     }
 };
 

@@ -20,18 +20,18 @@ const app = express();
 
 // Middleware pour parser le JSON
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // Configuration de la session
 app.use(session({
-    secret: 'your-secret-key',  // Clé secrète pour la session
+    secret: 'your-secret-key',  
     resave: false,
     saveUninitialized: false
 }));
 
 // Initialisation de Passport.js pour l'authentification
 app.use(passport.initialize());
-app.use(passport.session()); // Nécessaire si tu veux maintenir les sessions
+app.use(passport.session()); 
 
 // Middleware pour les messages flash
 app.use(flash());
@@ -39,16 +39,16 @@ app.use(flash());
 // Connexion à la base de données
 connectDB();
 
-app.use(express.urlencoded({ extended: true })); // Pour parser les données du formulaire
+app.use(express.urlencoded({ extended: true })); 
 
 // Utilisation des routes
-app.use('/auth', authRoutes); // Assurez-vous que ces routes sont définies dans le bon fichier
+app.use('/auth', authRoutes); 
 app.use('/reservations', reservationRoutes);
 app.use('/catways', catwayRoutes);
 
 // Configuration du moteur de template
-app.set('views', path.join(__dirname, 'views')); // Assurez-vous que le chemin est correct
-app.set('view engine', 'ejs'); // Ou le moteur de votre choix
+app.set('views', path.join(__dirname, 'views')); 
+app.set('view engine', 'ejs'); 
 
 
 
@@ -59,17 +59,17 @@ app.use('/auth', authRoutes);
 
 // Route de la page d'accueil
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));  // Page d'accueil
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));  
 });
 
 // Route du tableau de bord
 app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));  // Tableau de bord
+    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));  
 });
 
 // Route pour servir la documentation
 app.get('/documentation', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'documentation.html'));  // Documentation API
+    res.sendFile(path.join(__dirname, 'public', 'documentation.html'));  
 });
 
 // Démarrer le serveur
@@ -80,10 +80,10 @@ app.listen(PORT, () => {
 
 // Route pour afficher les détails d'un catway
 app.get('/catways/details/:id', async (req, res) => {
-    const catwayId = req.params.id; // Récupère l'ID du catway depuis les paramètres d'URL
+    const catwayId = req.params.id; 
 
     try {
-        const catway = await Catway.findById(catwayId); // Recherche le catway par ID
+        const catway = await Catway.findById(catwayId); 
         if (!catway) {
             return res.redirect('/dashboard?message=Catway non trouvé');
         }
@@ -104,10 +104,10 @@ app.get('/catways/details/:id', async (req, res) => {
 
 // Route pour afficher les détails d'une réservation
 app.get('/reservations/details/:id', async (req, res) => {
-    const reservationId = req.params.id; // Récupère l'ID de la réservation depuis les paramètres d'URL
+    const reservationId = req.params.id;
 
     try {
-        const reservation = await Reservation.findById(reservationId); // Recherche la réservation par ID et populate le catway
+        const reservation = await Reservation.findById(reservationId); 
         if (!reservation) {
             return res.redirect('/dashboard?message=Réservation non trouvée');
         }
@@ -133,7 +133,7 @@ app.get('/reservations/details/:id', async (req, res) => {
 // Route pour afficher la liste des catways
 app.get('/catways/list', async (req, res) => {
     try {
-        const catways = await Catway.find(); // Récupère tous les catways
+        const catways = await Catway.find(); 
         res.send(`
             <h1>Liste des Catways</h1>
             <ul>
@@ -150,8 +150,8 @@ app.get('/catways/list', async (req, res) => {
 // Route pour afficher la liste des réservations
 app.get('/reservations/list', async (req, res) => {
     try {
-        const reservations = await Reservation.find(); // Récupère toutes les réservations et les catways associés
-        const message = req.query.message; // Récupère le message de succès ou d'erreur s'il existe
+        const reservations = await Reservation.find(); 
+        const message = req.query.message; 
         res.send(`
             <h1>Liste des Réservations</h1>
             ${message ? `<p style="color:green;">${message}</p>` : ''}
@@ -195,17 +195,17 @@ app.get('/', (req, res) => {
 
 // Route pour créer un utilisateur
 app.post('/auth/register', async (req, res) => {
-    const { userId, email, password } = req.body; // Récupère les données du formulaire
+    const { userId, email, password } = req.body; 
 
     try {
         // Crée un nouvel utilisateur
         const newUser = new User({ userId, email, password });
-        await newUser.save(); // Enregistre l'utilisateur dans la base de données
+        await newUser.save(); 
         
-        res.redirect('/dashboard?message=Utilisateur créé avec succès'); // Redirige vers le tableau de bord
+        res.redirect('/dashboard?message=Utilisateur créé avec succès'); 
     } catch (error) {
         console.error(error);
-        res.redirect('/register?message=Erreur lors de la création de l’utilisateur'); // Redirige vers le formulaire en cas d'erreur
+        res.redirect('/register?message=Erreur lors de la création de l’utilisateur'); 
     }
 });
 
@@ -213,12 +213,12 @@ app.post('/auth/register', async (req, res) => {
 
 // Route pour modifier un utilisateur
 app.post('/auth/update-user', async (req, res) => {
-    const { userId, email, password } = req.body; // Récupère les données du formulaire
+    const { userId, email, password } = req.body; 
 
     try {
         const updateData = { email };
         if (password) {
-            updateData.password = password; // N'inclure le mot de passe que s'il est présent
+            updateData.password = password; 
         }
 
         // Rechercher l'utilisateur par userId
@@ -236,7 +236,7 @@ app.post('/auth/update-user', async (req, res) => {
 
 // Route pour supprimer un utilisateur
 app.post('/auth/delete-user', async (req, res) => {
-    const { userId } = req.body; // Récupère l'ID de l'utilisateur
+    const { userId } = req.body; 
 
     try {
         // Rechercher et supprimer l'utilisateur par userId
@@ -256,11 +256,11 @@ app.post('/auth/delete-user', async (req, res) => {
 
 // Route pour créer un catway
 app.post('/catways/create', async (req, res) => {
-    const { catwayId, catwayNumber, type, catwayState } = req.body; // Récupère les données du formulaire
+    const { catwayId, catwayNumber, type, catwayState } = req.body; 
 
     try {
         const newCatway = new Catway({ catwayId, catwayNumber, type, catwayState });
-        await newCatway.save(); // Enregistre le nouveau catway dans la base de données
+        await newCatway.save(); 
         res.redirect('/dashboard?message=Catway créé avec succès');
     } catch (error) {
         console.error(error);
@@ -271,13 +271,13 @@ app.post('/catways/create', async (req, res) => {
 
 // Route pour modifier un catway
 app.post('/catways/update', async (req, res) => {
-    const { catwayId, catwayNumber, type, catwayState } = req.body; // Récupère les données
+    const { catwayId, catwayNumber, type, catwayState } = req.body; 
 
     try {
         const updatedCatway = await Catway.findOneAndUpdate(
-            { catwayId }, // Utilisez catwayId pour trouver le catway
+            { catwayId }, 
             { catwayNumber, type, catwayState },
-            { new: true } // Renvoie le catway mis à jour
+            { new: true } 
         );
 
         if (!updatedCatway) {
@@ -294,10 +294,10 @@ app.post('/catways/update', async (req, res) => {
 
 // Route pour supprimer un catway
 app.post('/catways/delete', async (req, res) => {
-    const { catwayId } = req.body; // Récupère l'ID du catway
+    const { catwayId } = req.body; 
 
     try {
-        const deletedCatway = await Catway.findOneAndDelete({ catwayId }); // Recherche par catwayId
+        const deletedCatway = await Catway.findOneAndDelete({ catwayId }); 
         if (!deletedCatway) {
             return res.redirect('/dashboard?message=Catway non trouvé');
         }
@@ -311,7 +311,7 @@ app.post('/catways/delete', async (req, res) => {
 
 // Route pour modifier une réservation
 app.post('/reservations/update', async (req, res) => {
-    const { reservationId, clientName, boatName, checkIn, checkOut } = req.body; // Récupère les données
+    const { reservationId, clientName, boatName, checkIn, checkOut } = req.body; 
 
     try {
         const updatedReservation = await Reservation.findByIdAndUpdate(reservationId, { clientName, boatName, checkIn, checkOut }, { new: true });
@@ -327,7 +327,7 @@ app.post('/reservations/update', async (req, res) => {
 
 // Route pour supprimer une réservation
 app.post('/reservations/delete', async (req, res) => {
-    const { reservationId } = req.body; // Récupère l'ID de la réservation
+    const { reservationId } = req.body; 
 
     try {
         await Reservation.findByIdAndDelete(reservationId);
@@ -339,20 +339,44 @@ app.post('/reservations/delete', async (req, res) => {
 });
 
 
+app.post('/reservations', async (req, res) => {
+    console.log(req.body); 
+    const { reservationId, catwayNumber, clientName, boatName, checkIn, checkOut } = req.body;
+
+    try {
+        // Convertir les dates en objets Date
+        const newReservation = new Reservation({
+            reservationId,
+            catwayNumber,
+            clientName,
+            boatName,
+            checkIn: new Date(checkIn),  
+            checkOut: new Date(checkOut)  
+        });
+        await newReservation.save(); 
+
+        res.redirect('/dashboard?message=Réservation enregistrée avec succès');
+    } catch (error) {
+        console.error('Erreur lors de la création de la réservation:', error);
+        res.redirect('/reservations?message=Erreur lors de la création de la réservation');
+    }
+});
+
+
 // Route pour enregistrer une réservation
 app.post('/reservations', async (req, res) => {
-    const { reservationId, catwayNumber, clientName, boatName, checkIn, checkOut } = req.body; // Récupère les données du formulaire
+    const { reservationId, catwayNumber, clientName, boatName, checkIn, checkOut } = req.body; 
 
     try {
         // Crée une nouvelle réservation
         const newReservation = new Reservation({ reservationId, catwayNumber, clientName, boatName, checkIn, checkOut });
-        await newReservation.save(); // Enregistre la réservation dans la base de données
+        await newReservation.save(); 
 
         // Renvoie une réponse de succès
         res.redirect('/dashboard?message=Réservation enregistrée avec succès');
     } catch (error) {
-        console.error('Erreur lors de la création de la réservation:', error); // Log l'erreur
-        res.redirect('/reservations?message=Erreur lors de la création de la réservation'); // Redirige vers le formulaire en cas d'erreur
+        console.error('Erreur lors de la création de la réservation:', error);
+        res.redirect('/reservations?message=Erreur lors de la création de la réservation');
     }
 });
 

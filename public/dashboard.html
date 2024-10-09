@@ -166,27 +166,20 @@
 <h2>Gestion des Réservations</h2>
 
 <!-- Formulaire pour enregistrer une réservation -->
-<form action="/reservations" method="POST"> <!-- Utiliser la bonne route -->
+<form action="/reservations" method="POST">
     <h3>Enregistrer une Réservation</h3>
-
     <label for="reservationId">Identifiant de la Réservation :</label>
-    <input type="text" id="reservationId" name="reservationId" required> <!-- Ajout du champ reservationId -->
-
+    <input type="text" id="reservationId" name="reservationId" required>
     <label for="catwayNumber">Numéro du Catway :</label>
     <input type="number" id="catwayNumber" name="catwayNumber" required>
-
     <label for="clientName">Nom du Client :</label>
     <input type="text" id="clientName" name="clientName" required>
-
     <label for="boatName">Nom du Bateau :</label>
     <input type="text" id="boatName" name="boatName" required>
-
     <label for="checkIn">Date d'Arrivée :</label>
     <input type="datetime-local" id="checkIn" name="checkIn" required>
-
     <label for="checkOut">Date de Départ :</label>
     <input type="datetime-local" id="checkOut" name="checkOut" required>
-
     <button type="submit">Enregistrer Réservation</button>
 </form>
 
@@ -212,16 +205,11 @@
 
 <script>
     function showReservationDetails(form) {
-        const reservationId = form.reservationId.value; // Récupère l'ID de la réservation
-        window.location.href = `/reservations/details/${reservationId}`; // Redirige vers la route de détails
-        return false; // Empêche l'envoi du formulaire
+        const reservationId = form.reservationId.value; 
+        window.location.href = `/reservations/details/${reservationId}`; 
+        return false; 
     }
 </script>
-
-
-
-
-
 
 
     <h2>Liens</h2>
@@ -230,11 +218,11 @@
     <a href="/auth/logout">Déconnexion</a>
     
     <script>
-        // Exemple de script pour afficher un message
+       
         const params = new URLSearchParams(window.location.search);
         const message = params.get('message');
         if (message) {
-            document.getElementById('message').innerText = message; // Affiche le message
+            document.getElementById('message').innerText = message; 
         }
     </script>
 </body>

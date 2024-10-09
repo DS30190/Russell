@@ -1,6 +1,6 @@
 const Reservation = require('../models/Reservation');
 
-// Récupérer toutes les réservations d'un catway spécifique
+
 exports.getAllReservationsByCatway = async (req, res) => {
     try {
         const reservations = await Reservation.find({ catwayId: req.params.catwayId }); // Assure-toi que 'catwayId' est le bon champ
@@ -10,7 +10,7 @@ exports.getAllReservationsByCatway = async (req, res) => {
     }
 };
 
-// Récupérer une réservation spécifique
+
 exports.getReservationById = async (req, res) => {
     try {
         const reservation = await Reservation.findById(req.params.id);
@@ -21,7 +21,6 @@ exports.getReservationById = async (req, res) => {
     }
 };
 
-// Créer une nouvelle réservation
 exports.createReservation = async (req, res) => {
     const reservation = new Reservation(req.body);
     try {
@@ -32,7 +31,7 @@ exports.createReservation = async (req, res) => {
     }
 };
 
-// Mettre à jour une réservation
+
 exports.updateReservation = async (req, res) => {
     try {
         const reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -43,7 +42,7 @@ exports.updateReservation = async (req, res) => {
     }
 };
 
-// Supprimer une réservation
+
 exports.deleteReservation = async (req, res) => {
     try {
         const reservation = await Reservation.findByIdAndDelete(req.params.id);

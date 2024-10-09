@@ -43,10 +43,10 @@
 <body>
     <h1>Détails du Catway</h1>
     <div id="catway-details">
-        <!-- Les détails du catway seront affichés ici avec JavaScript -->
+        
     </div>
     <script>
-        const catwayId = window.location.pathname.split('/').pop(); // Obtient l'ID du catway depuis l'URL
+        const catwayId = window.location.pathname.split('/').pop(); 
         fetch(`/api/catways/${catwayId}`)
             .then(response => response.json())
             .then(catway => {

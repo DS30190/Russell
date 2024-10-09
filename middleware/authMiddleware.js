@@ -1,8 +1,8 @@
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        return next(); // L'utilisateur est authentifié, on passe à la suite
+        return next(); 
     }
-    res.redirect('/auth/login'); // Sinon, on le redirige vers la page de connexion
+    res.redirect('/auth/login'); 
 }
 
 module.exports = ensureAuthenticated;
