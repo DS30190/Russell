@@ -55,8 +55,8 @@
     <div id="message"></div> <!-- Zone pour afficher les messages -->
 
     <h2>Gestion des Utilisateurs</h2>
-    <form action="/auth/create-user" method="POST">
-        <h3>Créer un Utilisateur</h3>
+    <form action="/auth/register" method="POST">
+        <h3>Créer un utilisateur</h3>
         <label for="newUserEmail">Email :</label>
         <input type="email" id="newUserEmail" name="email" required>
         <br>
@@ -65,6 +65,8 @@
         <br>
         <button type="submit">Créer Utilisateur</button>
     </form>
+    
+    
 
     <form action="/auth/update-user" method="POST">
         <h3>Modifier un Utilisateur</h3>
@@ -154,7 +156,7 @@
 <h2>Gestion des Réservations</h2>
 
 <!-- Formulaire pour enregistrer une réservation -->
-<form action="/reservations/create" method="POST">
+<form action="/reservations" method="POST"> <!-- Utiliser la bonne route -->
     <h3>Enregistrer une Réservation</h3>
     
     <label for="catwayNumber">Numéro du Catway :</label>
@@ -174,6 +176,7 @@
     
     <button type="submit">Enregistrer Réservation</button>
 </form>
+
 
 <!-- Formulaire pour supprimer une réservation -->
 <form action="/reservations/delete" method="POST">
