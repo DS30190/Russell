@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
 const reservationSchema = new mongoose.Schema({
-  catwayId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Catway'  // Référence à la collection Catway
-  },
-  clientName: { type: String, required: true },   // Nom du client
-  boatName: { type: String, required: true },     // Nom du bateau
-  checkIn: { type: Date, required: true },        // Date d'arrivée
-  checkOut: { type: Date, required: true },       // Date de départ
+    reservationId: { type: String, required: true, unique: true }, // Ajoutez l'unicité
+    catwayNumber: { type: Number, required: true },
+    clientName: { type: String, required: true },
+    boatName: { type: String, required: true },
+    checkIn: { type: Date, required: true },
+    checkOut: { type: Date, required: true },
 });
 
-module.exports = mongoose.model('Reservation', reservationSchema);
+const Reservation = mongoose.model('Reservation', reservationSchema);
+module.exports = Reservation;
+
 
 
 

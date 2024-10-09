@@ -103,50 +103,32 @@ app.get('/catways/details/:id', async (req, res) => {
 });
 
 // Route pour afficher les détails d'une réservation
-app.get('/reservations/details', async (req, res) => {
-    const reservationId = req.query.reservationId; // Récupère l'ID de la réservation depuis la requête
-
-    try {
-        const reservation = await Reservation.findById(reservationId).populate('catwayId'); // Recherche la réservation par ID
-        if (!reservation) {
-            return res.status(404).send('Réservation non trouvée');
-        }
-        res.send(`
-            <h1>Détails de la Réservation</h1>
-            <p><strong>Nom du Client :</strong> ${reservation.clientName}</p>
-            <p><strong>Nom du Bateau :</strong> ${reservation.boatName}</p>
-            <p><strong>Date d'Arrivée :</strong> ${new Date(reservation.checkIn).toLocaleString()}</p>
-            <p><strong>Date de Départ :</strong> ${new Date(reservation.checkOut).toLocaleString()}</p>
-            <a href="/reservations/list">Retour à la liste des réservations</a>
-        `);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Erreur lors de la récupération de la réservation');
-    }
-});
-
-// Route pour afficher les détails d'une réservation par ID dans l'URL
 app.get('/reservations/details/:id', async (req, res) => {
     const reservationId = req.params.id; // Récupère l'ID de la réservation depuis les paramètres d'URL
 
     try {
-        const reservation = await Reservation.findById(reservationId).populate('catwayId'); // Recherche la réservation par ID
+        const reservation = await Reservation.findById(reservationId).populate('catwayId'); // Recherche la réservation par ID et populate le catway
         if (!reservation) {
-            return res.status(404).send('Réservation non trouvée');
+            return res.redirect('/dashboard?message=Réservation non trouvée');
         }
+
+        // Affiche les détails de la réservation
         res.send(`
             <h1>Détails de la Réservation</h1>
             <p><strong>Nom du Client :</strong> ${reservation.clientName}</p>
             <p><strong>Nom du Bateau :</strong> ${reservation.boatName}</p>
             <p><strong>Date d'Arrivée :</strong> ${new Date(reservation.checkIn).toLocaleString()}</p>
             <p><strong>Date de Départ :</strong> ${new Date(reservation.checkOut).toLocaleString()}</p>
+            <p><strong>Numéro de Catway :</strong> ${reservation.catwayId ? reservation.catwayId.catwayNumber : 'N/A'}</p>
             <a href="/reservations/list">Retour à la liste des réservations</a>
         `);
     } catch (error) {
         console.error(error);
-        res.status(500).send('Erreur lors de la récupération de la réservation');
+        res.redirect('/dashboard?message=Erreur lors de la récupération des détails de la réservation');
     }
 });
+
+
 
 // Route pour afficher la liste des catways
 app.get('/catways/list', async (req, res) => {
@@ -168,7 +150,7 @@ app.get('/catways/list', async (req, res) => {
 // Route pour afficher la liste des réservations
 app.get('/reservations/list', async (req, res) => {
     try {
-        const reservations = await Reservation.find().populate('catwayId'); // Récupère toutes les réservations et les catways associés
+        const reservations = await Reservation.find(); // Récupère toutes les réservations et les catways associés
         const message = req.query.message; // Récupère le message de succès ou d'erreur s'il existe
         res.send(`
             <h1>Liste des Réservations</h1>
@@ -178,8 +160,8 @@ app.get('/reservations/list', async (req, res) => {
                     <li>
                         <strong>Client :</strong> ${reservation.clientName} -
                         <strong>Bateau :</strong> ${reservation.boatName} -
-                        <strong>Catway :</strong> ${reservation.catwayId ? reservation.catwayId.catwayNumber : 'Non spécifié'} -
-                        <strong>Statut :</strong> ${reservation.status}
+                        <strong>Catway :</strong> ${reservation.catwayNumber} - <!-- Utilisation de catwayNumber ici -->
+                        <strong>Dates :</strong> ${new Date(reservation.checkIn).toLocaleString()} à ${new Date(reservation.checkOut).toLocaleString()}
                     </li>`).join('')}
             </ul>
             <a href="/dashboard">Retour au tableau de bord</a>
@@ -357,23 +339,23 @@ app.post('/reservations/delete', async (req, res) => {
 });
 
 
-// Route pour enregistrer une réservation sans authentification
+// Route pour enregistrer une réservation
 app.post('/reservations', async (req, res) => {
-    const { clientName, boatName, checkIn, checkOut, catwayNumber } = req.body; // Assure-toi de collecter toutes les données nécessaires
+    const { reservationId, catwayNumber, clientName, boatName, checkIn, checkOut } = req.body; // Récupère les données du formulaire
 
     try {
-        const newReservation = new Reservation({
-            clientName,
-            boatName,
-            checkIn,
-            checkOut,
-            catwayNumber,
-            status: 'Confirmée', // Si tu veux un statut par défaut
-        });
-        await newReservation.save();
-        res.status(201).json({ message: 'Réservation ajoutée avec succès.', reservation: newReservation });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Erreur lors de l\'ajout de la réservation.' });
+        // Crée une nouvelle réservation
+        const newReservation = new Reservation({ reservationId, catwayNumber, clientName, boatName, checkIn, checkOut });
+        await newReservation.save(); // Enregistre la réservation dans la base de données
+
+        // Renvoie une réponse de succès
+        res.redirect('/dashboard?message=Réservation enregistrée avec succès');
+    } catch (error) {
+        console.error('Erreur lors de la création de la réservation:', error); // Log l'erreur
+        res.redirect('/reservations?message=Erreur lors de la création de la réservation'); // Redirige vers le formulaire en cas d'erreur
     }
 });
+
+
+
+
