@@ -46,22 +46,26 @@
 
     <h2>Connexion</h2>
     <form action="/auth/login" method="POST" autocomplete="off">
+        <label for="user-id">Identifiant :</label>
+        <input type="text" id="user-id" name="userId" required>
         <label for="email">Email :</label>
         <input type="email" id="email" name="email" required>
         <label for="password">Mot de passe :</label>
         <input type="password" id="password" name="password" required>
         <button type="submit">Se connecter</button>
     </form>
-
+    
     <h2>Inscription</h2>
     <form action="/auth/register" method="POST" autocomplete="off">
+        <label for="user-id">Identifiant :</label>
+        <input type="text" id="new-user-id" name="userId" required>
         <label for="new-email">Email :</label>
         <input type="email" id="new-email" name="email" required>
         <label for="new-password">Mot de passe :</label>
         <input type="password" id="new-password" name="password" required>
         <button type="submit">S'inscrire</button>
     </form>
-
+    
     <a href="/documentation">Voir la documentation de l'API</a>
 </body>
 <script>
