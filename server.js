@@ -107,7 +107,7 @@ app.get('/reservations/details/:id', async (req, res) => {
     const reservationId = req.params.id; // Récupère l'ID de la réservation depuis les paramètres d'URL
 
     try {
-        const reservation = await Reservation.findById(reservationId).populate('catwayId'); // Recherche la réservation par ID et populate le catway
+        const reservation = await Reservation.findById(reservationId); // Recherche la réservation par ID et populate le catway
         if (!reservation) {
             return res.redirect('/dashboard?message=Réservation non trouvée');
         }
@@ -119,7 +119,7 @@ app.get('/reservations/details/:id', async (req, res) => {
             <p><strong>Nom du Bateau :</strong> ${reservation.boatName}</p>
             <p><strong>Date d'Arrivée :</strong> ${new Date(reservation.checkIn).toLocaleString()}</p>
             <p><strong>Date de Départ :</strong> ${new Date(reservation.checkOut).toLocaleString()}</p>
-            <p><strong>Numéro de Catway :</strong> ${reservation.catwayId ? reservation.catwayId.catwayNumber : 'N/A'}</p>
+            <p><strong>Numéro de Catway :</strong> ${reservation.catwayNumber}</p>
             <a href="/reservations/list">Retour à la liste des réservations</a>
         `);
     } catch (error) {
