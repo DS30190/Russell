@@ -1,0 +1,8 @@
+version: 1
+services:
+  - type: web
+    name: russell-port-api 
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js 
