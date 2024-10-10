@@ -2,7 +2,7 @@
   "name": "russell_port_api",
   "version": "1.0.0",
   "engines": {
-    "node": ">=18.x"
+    "node": ">=16.20.1"
   },
   "main": "server.js",
   "scripts": {

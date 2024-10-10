@@ -193,6 +193,21 @@ app.get('/', (req, res) => {
     `);
 });
 
+// Route GET pour afficher le formulaire d'enregistrement
+app.get('/register', (req, res) => {
+    res.send(`
+        <form action="/auth/register" method="POST">
+            <label for="userId">User ID:</label>
+            <input type="text" name="userId" required><br>
+            <label for="email">Email:</label>
+            <input type="email" name="email" required><br>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required><br>
+            <input type="submit" value="Register">
+        </form>
+    `);
+});
+
 // Route pour créer un utilisateur
 app.post('/auth/register', async (req, res) => {
     const { userId, email, password } = req.body; 
