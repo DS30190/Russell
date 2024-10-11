@@ -286,13 +286,13 @@ app.post('/catways/create', async (req, res) => {
 
 // Route pour modifier un catway
 app.post('/catways/update', async (req, res) => {
-    const { catwayId, catwayNumber, type, catwayState } = req.body; 
+    const { catwayId, catwayNumber, type, catwayState } = req.body;
 
     try {
         const updatedCatway = await Catway.findOneAndUpdate(
-            { catwayId }, 
+            { _id: catwayId }, 
             { catwayNumber, type, catwayState },
-            { new: true } 
+            { new: true }
         );
 
         if (!updatedCatway) {
@@ -306,13 +306,12 @@ app.post('/catways/update', async (req, res) => {
     }
 });
 
-
 // Route pour supprimer un catway
 app.post('/catways/delete', async (req, res) => {
     const { catwayId } = req.body; 
 
     try {
-        const deletedCatway = await Catway.findOneAndDelete({ catwayId }); 
+        const deletedCatway = await Catway.findOneAndDelete({ _id: catwayId }); 
         if (!deletedCatway) {
             return res.redirect('/dashboard?message=Catway non trouvé');
         }
